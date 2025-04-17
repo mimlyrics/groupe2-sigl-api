@@ -19,10 +19,9 @@ app.use(express.urlencoded({extended: false}));
 app.use('/public', express.static('/public'));
 
 const authRoutes = require('./routes/authRoutes');
-const vehicleRoutes = require('./routes/vehicleRoutes');
 const rentRoutes = require('./routes/rentRoutes');
 app.use('/api/v1', authRoutes);
-app.use('/api/v1', vehicleRoutes);
+
 app.use('/api/v1', rentRoutes);
 
 // error middlewares
