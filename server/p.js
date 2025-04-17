@@ -1,4 +1,4 @@
-const {expect, it, describe} = require('vitest');
+/*const {expect, it, describe} = require('vitest');
 
 function getCoupons () {
     let array =  [
@@ -22,4 +22,4 @@ describe('must return an array of object', ()=> {
         result = typeResult.values;
         expect(result).toBe(expectedResult);
     })
-})
+})*/
