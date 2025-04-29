@@ -1,3 +1,3 @@
 "# groupe2-sigl-api" 
-"decentralized-app" 
+"api-rest" 
 "groupe2-sigl-api.app" 
