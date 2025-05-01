@@ -1,8 +1,8 @@
-import Vehicle from '../../models/vehicle.model.js';
-import { Op } from 'sequelize';
-import logger from '../logger.js';
+const Vehicle =  require('../../models/vehicle.model.js');
+const {Op} = require('sequelize');
+const logger = require ('../logger.js');
 
-export const createVehicle = async (req, res) => {
+const createVehicle = async (req, res) => {
   try {
     const { marque, model, immatriculation, annees, prixLocation } = req.body;
     
@@ -34,7 +34,7 @@ export const createVehicle = async (req, res) => {
   }
 };
 
-export const getAllVehicles = async (req, res) => {
+const getAllVehicles = async (req, res) => {
   try {
     const vehicles = await Vehicle.findAll();
     if (vehicles.length === 0) {
@@ -47,7 +47,7 @@ export const getAllVehicles = async (req, res) => {
   }
 };
 
-export const getVehicleById = async (req, res) => {
+const getVehicleById = async (req, res) => {
   try {
     const vehicle = await Vehicle.findByPk(req.params.id);
     if (!vehicle) {
@@ -60,7 +60,7 @@ export const getVehicleById = async (req, res) => {
   }
 };
 
-export const updateVehicle = async (req, res) => {
+const updateVehicle = async (req, res) => {
   try {
     const [updated] = await Vehicle.update(req.body, {
       where: { id: req.params.id }
@@ -79,7 +79,7 @@ export const updateVehicle = async (req, res) => {
   }
 };
 
-export const deleteVehicle = async (req, res) => {
+const deleteVehicle = async (req, res) => {
   try {
     const deleted = await Vehicle.destroy({
       where: { id: req.params.id }
@@ -97,7 +97,7 @@ export const deleteVehicle = async (req, res) => {
   }
 };
 
-export const searchByImmatriculation = async (req, res) => {
+const searchByImmatriculation = async (req, res) => {
   try {
     const vehicle = await Vehicle.findOne({
       where: {
@@ -117,7 +117,7 @@ export const searchByImmatriculation = async (req, res) => {
   }
 };
 
-export const filterByPrice = async (req, res) => {
+const filterByPrice = async (req, res) => {
   try {
     const maxPrice = parseFloat(req.params.priceMax);
     if (isNaN(maxPrice)) {
@@ -139,3 +139,5 @@ export const filterByPrice = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+module.exports = {searchByImmatriculation, createVehicle, getAllVehicles, getVehicleById, filterByPrice, deleteVehicle, updateVehicle }

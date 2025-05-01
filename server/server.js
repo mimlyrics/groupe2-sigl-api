@@ -20,10 +20,11 @@ app.use('/public', express.static('/public'));
 
 const authRoutes = require('./routes/authRoutes');
 const rentRoutes = require('./routes/rentRoutes');
+const vehicleRoutes = require('./routes/routes');
 app.use('/api/v1', authRoutes);
 
 app.use('/api/v1', rentRoutes);
-
+app.use('/api/v1',  vehicleRoutes);
 // error middlewares
 app.use(notFound);
 app.use(errorHandler);

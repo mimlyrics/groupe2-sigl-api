@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import pinoHttp from 'pino-http';
 import logger from './logger.js';
-import vehicleRoutes from './routes/vehicle.routes.js';
+import vehicleRoutes from './routes/routes.js';
 import { connectDB } from './config/db.js';
 import { seedVehicles } from './data/seedData.js';
 
