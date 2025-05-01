@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
-const { User, Token } = require('../models'); // Adjust the import path if needed
+const { User, Token } = require('../models'); 
 const { generateToken, generateAccessToken } = require('../utils/token');
 
 const asyncHandler = require('express-async-handler');
-const { User, Token } = require('../models'); // adjust path as needed
-const { generateToken, generateAccessToken } = require('../utils/token'); // adjust if needed
+const { User, Token } = require('../models'); 
+const { generateToken, generateAccessToken } = require('../utils/token'); 
 
 const auth = asyncHandler(async (req, res) => {
     const cookies = req.cookies;

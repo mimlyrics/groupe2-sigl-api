@@ -1,10 +1,10 @@
 // utils/initializeDatabase.js
-import logger from '../logger.js';
-import { connectDB } from '../../config/db.js';
-import { seedVehicles } from '../data/seedData.js';
+const logger=require('../logger.js');
+const { connectDB } = require('../config/db.js');
+const { seedVehicles } = require ('../data/seedData.js');
 
 
-export const initializeDatabase = async () => {
+const initializeDatabase = async () => {
   try {
     // Connect to database first
     await connectDB();
@@ -19,3 +19,5 @@ export const initializeDatabase = async () => {
     process.exit(1);
   }
 };
+
+module.exports = initializeDatabase;

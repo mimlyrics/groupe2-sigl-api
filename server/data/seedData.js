@@ -1,5 +1,5 @@
-import Vehicle from '../../models/vehicle.model.js';
-import logger from '../logger.js';
+const Vehicle = require("../models/Vehicle.js");
+const logger = require("../logger.js");
 
 // Seed data with random vehicle combinations
 const generateSeedData = () => {
@@ -27,7 +27,7 @@ const generateSeedData = () => {
 };
 
 // Function to seed the database
-export const seedVehicles = async () => {
+ const seedVehicles = async () => {
   try {
     // Check if database already has vehicles
     const count = await Vehicle.count();
@@ -48,3 +48,5 @@ export const seedVehicles = async () => {
     logger.error('Error seeding database:', error.message);
   }
 };
+
+module.exports = seedVehicles;

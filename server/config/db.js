@@ -1,7 +1,7 @@
 const {Pool, Client} = require('pg');
 const {Sequelize} = require('sequelize');
 require('dotenv').config();
-
+//const seedVehicles = require('../data/seedData');
 const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -25,6 +25,7 @@ const testConnection = async () => {
     try {
         await sequelize.authenticate();
         console.log('Database connected successfully');
+        //await seedVehicles();
 
     }catch(error) {
         console.error('Unable to connect to the database: ', error);

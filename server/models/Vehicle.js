@@ -1,7 +1,8 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../config/db.js';
+const {DataTypes, Model} = require('sequelize');
+const sequelize = require('../config/db');
+class Vehicle extends Model {};
 
-const Vehicle = sequelize.define('Vehicle', {
+Vehicle.init({
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -12,7 +13,7 @@ const Vehicle = sequelize.define('Vehicle', {
     allowNull: false,
   },
   model: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING, 
     allowNull: false,
   },
   immatriculation: {
@@ -29,16 +30,10 @@ const Vehicle = sequelize.define('Vehicle', {
     allowNull: false,
   },
 }, {
+  sequelize,
+  tableName: 'vehicles',
+  modelName: 'Vehicle',
   timestamps: true,
-  indexes: [
-    {
-      fields: ['immatriculation'],
-      unique: true,
-    },
-    {
-      fields: ['prixLocation'],
-    }
-  ]
 });
 
 module.exports = Vehicle;

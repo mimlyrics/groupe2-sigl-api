@@ -1,4 +1,4 @@
-const Vehicle =  require('../../models/vehicle.model.js');
+const Vehicle = require('../models/Vehicle.js');
 const {Op} = require('sequelize');
 const logger = require ('../logger.js');
 
