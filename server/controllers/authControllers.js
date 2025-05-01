@@ -38,8 +38,15 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    const cookies = req.cookies;
-    console.log(cookies);
+
+    // get cookie, check if user exists, get all his tokens
+    const authHeader = req.headers.authorization;
+    //console.log(authHeader);
+    let cookie = null;
+    if(authHeader) {
+        cookie = authHeader.split(' ')[1];
+    }
+    console.log(cookie)
     let {email, password} = req.body;
     const user = await User.findOne({where: {email}});
     //console.log(user);
@@ -56,15 +63,16 @@ const login = async (req, res) => {
     //console.log(tokens);
     validPassword = await user.matchPassword(password);
     console.log(validPassword);
+
     if(user && validPassword) {
-        let newRefreshTokenArray = !cookies?.jwt ? tokens: tokens.filter(rt=> rt.token !== cookies.jwt);
+        let newRefreshTokenArray = !cookie ? tokens: tokens.filter(rt=> rt.token !== cookie);
         //console.log(newRefreshTokenArray);
-        if(cookies?.jwt) {
+        if(cookie) {
         // 1 user logs in but never uses RT and does not logout
             // RT is stolen
             // 1 & 2, REUSE detection is needed to clear all RTS when user logs in
 
-            const refreshToken = cookies.jwt;
+            const refreshToken = cookie;
             const foundToken = await Token.findOne({where: {refreshToken}});
 
             // detected refresh token reuse
@@ -136,4 +144,10 @@ const getUsersById = asyncHandler(async (req, res) => {
     const users = User.findOne({where: {id}});
 })
 
-module.exports = {register, login, logout, getUsers, getUsersById};
+const deleteUsersById = asyncHandler(async (req, res) => {
+    const {id} = req.params;
+    await User.destroy({where: {id}});
+    return res.status(200).json(`user with ${id} deleted successfully`)
+})
+
+module.exports = {register, login, logout, getUsers, getUsersById, deleteUsersById};
