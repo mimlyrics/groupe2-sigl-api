@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propelize - Connexion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --error: #ef233c;
+      --success: #4cc9f0;
+      --text: #2b2d42;
+      --light: #f8f8fa;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text);
+    }
+    
+    .auth-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 420px;
+      padding: 2.5rem;
+      margin: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .auth-header h1 {
+      font-size: 1.8rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    
+    .auth-header p {
+      color: #6c757d;
+    }
+    
+    .auth-form .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .auth-form label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .auth-form input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.3s;
+    }
+    
+    .auth-form input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      margin-top: 1rem;
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(67, 97, 238, 0.1);
+    }
+    
+    .message {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      display: none;
+    }
+    
+    .error-message {
+      background-color: rgba(239, 35, 60, 0.1);
+      color: var(--error);
+      display: block;
+    }
+    
+    .success-message {
+      background-color: rgba(76, 201, 240, 0.1);
+      color: var(--success);
+    }
+    
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+    
+    .auth-footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-header">
+      <h1>Bienvenue sur Propelize</h1>
+      <p>Connectez-vous pour accéder à votre espace</p>
+    </div>
+    
+    <div id="errorMessage" class="message error-message hidden"></div>
+    <div id="successMessage" class="message success-message hidden"></div>
+    
+    <form id="loginForm" class="auth-form">
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username" 
+          placeholder="Entrez votre nom d'utilisateur" 
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          placeholder="Entrez votre mot de passe" 
+          required
+        >
+      </div>
+      
+      <button type="submit" class="btn btn-primary" id="submitBtn">
+        <span id="submitText">Se connecter</span>
+        <span id="submitLoader" class="loading hidden"></span>
+      </button>
+    </form>
+    
+    <div class="auth-footer">
+      <p>Pas encore de compte ? <a href="#" id="registerLink">S'inscrire</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('loginForm');
+      const registerLink = document.getElementById('registerLink');
+      const errorMessage = document.getElementById('errorMessage');
+      const successMessage = document.getElementById('successMessage');
+      const submitBtn = document.getElementById('submitBtn');
+      const submitText = document.getElementById('submitText');
+      const submitLoader = document.getElementById('submitLoader');
+      
+      // Basculer entre login et register
+      registerLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = '/register.html';
+      });
+      
+      // Gestion de la connexion
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Afficher le loader
+        submitText.textContent = 'Connexion en cours...';
+        submitLoader.classList.remove('hidden');
+        submitBtn.disabled = true;
+        
+        const formData = {
+          name: loginForm.username.value,
+          password: loginForm.password.value
+        };
+        
+        try {
+          const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          
+          const data = await response.json();
+          
+          if (!response.ok) {
+            throw new Error(data.error || 'Erreur de connexion');
+          }
+          
+          // Connexion réussie
+          successMessage.textContent = 'Connexion réussie ! Redirection en cours...';
+          successMessage.classList.remove('hidden');
+          errorMessage.classList.add('hidden');
+          
+          // Stocker les tokens
+          localStorage.setItem('accessToken', data.accessToken);
+          localStorage.setItem('refreshToken', data.refreshToken);
+          
+          // Rediriger après un délai
+          setTimeout(() => {
+            window.location.href = '/vehicles.html';
+          }, 1500);
+          
+        } catch (error) {
+          errorMessage.textContent = error.message;
+          errorMessage.classList.remove('hidden');
+          successMessage.classList.add('hidden');
+          
+          // Réactiver le bouton
+          submitText.textContent = 'Se connecter';
+          submitLoader.classList.add('hidden');
+          submitBtn.disabled = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
